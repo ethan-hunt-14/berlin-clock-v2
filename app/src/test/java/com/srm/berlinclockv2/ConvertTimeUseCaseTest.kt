@@ -61,4 +61,36 @@ class ConvertTimeUseCaseTest {
 
         assertEquals("OOOO", fourMinutesState.oneMinutesRow)
     }
+
+    @Test
+    fun testFiveMinuteRow_shouldHandleQuarterZeroMinute() {
+        // 0 minutes
+        val zeroMinuteState = useCase.execute(LocalTime.of(10,0,0))
+        assertEquals("OOOOOOOOOOO", zeroMinuteState.fiveMinutesRow)
+    }
+
+    @Test
+    fun testFiveMinuteRow_shouldHandleQuarterFifteenMinute() {
+        val fifteenMinutesState = useCase.execute(LocalTime.of(10,15,0))
+        assertEquals("YYROOOOOOOO", fifteenMinutesState.fiveMinutesRow)
+    }
+
+    @Test
+    fun testFiveMinuteRow_shouldHandleQuarterThirtyMinute() {
+        val thirtyMinutesState = useCase.execute(LocalTime.of(10,30,0))
+        assertEquals("YYRYYROOOOO", thirtyMinutesState.fiveMinutesRow)
+    }
+
+    @Test
+    fun testFiveMinuteRow_shouldHandleQuarterFiftyMinute() {
+        val fiftyMinutesState = useCase.execute(LocalTime.of(10,50,0))
+        assertEquals("YYRYYRYYRYO", fiftyMinutesState.fiveMinutesRow)
+    }
+
+    @Test
+    fun testFiveMinuteRow_shouldHandleQuarterFiftyNineMinute() {
+        val fiftyNineMinutesState = useCase.execute(LocalTime.of(10,59,0))
+        assertEquals("YYRYYRYYRYY", fiftyNineMinutesState.fiveMinutesRow)
+    }
+
 }
