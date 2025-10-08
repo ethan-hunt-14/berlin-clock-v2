@@ -1,45 +1,32 @@
 package com.srm.berlinclockv2.domain
 
 import data.BerlinClockState
+import java.time.LocalTime
 
 class ConvertTimeUseCase {
 
-    private val regex = "(\\d{2}):(\\d{2}):(\\d{2})".toRegex()
-
-    fun execute(timeString: String): BerlinClockState {
-
-        val match = regex.find(timeString)
-        if (match == null || match.groupValues.size < 4) {
-            return BerlinClockState()
-        }
-
-        val hours = match.groupValues[1].toInt()
-        val minutes = match.groupValues[2].toInt()
-        val seconds = match.groupValues[3].toInt()
+    fun execute(time: LocalTime): BerlinClockState {
 
         return BerlinClockState(
-            secondsRow = getSecondsRow(seconds),
-            oneMinutesRow = getOneMinutesRow(minutes),
-            fiveMinutesRow = getFiveMinutesRow(minutes),
-            oneHoursRow = getOneHoursRow(hours),
-            fiveHoursRow = getFiveHoursRow(hours)
+            secondsRow = getSecondsRow(time.second),
+            oneMinutesRow = getOneMinutesRow(time.minute),
+            fiveMinutesRow = getFiveMinutesRow(time.minute),
+            oneHoursRow = getOneHoursRow(time.hour),
+            fiveHoursRow = getFiveHoursRow(time.hour)
         )
     }
 
     private fun getSecondsRow(seconds: Int): String {
-        // Seconds blink signal (Yellow - Even seconds, Off - Odd seconds)
         return if (seconds % 2 == 0) "Y" else "O"
     }
 
     private fun getOneMinutesRow(minutes: Int): String {
-        // Each light - 1 minute - so 4 lights
         val blinkCount = minutes % 5
         return "Y".repeat(blinkCount) + "O".repeat(4 - blinkCount)
     }
 
     // divide it into more smaller portions
     private fun getFiveMinutesRow(minutes: Int): String {
-        // Each light - 5 minutes - so 11 lights
         val blinkCount = minutes / 5
         val stringBuilder = StringBuilder()
 
@@ -63,13 +50,11 @@ class ConvertTimeUseCase {
     }
 
     private fun getOneHoursRow(hours: Int): String {
-        // Each light - 1 hour/remainder - so 4 lights
         val blinkCount = hours % 5
         return "R".repeat(blinkCount) + "O".repeat(4 - blinkCount)
     }
 
     private fun getFiveHoursRow(hours: Int): String {
-        // Each light - 5 hours - so 4 lights
         val blinkCount = hours / 5
         return "R".repeat(blinkCount) + "O".repeat(4 - blinkCount)
     }
