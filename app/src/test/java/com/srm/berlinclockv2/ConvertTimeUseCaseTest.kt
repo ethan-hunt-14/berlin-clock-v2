@@ -127,4 +127,25 @@ class ConvertTimeUseCaseTest {
         assertEquals("OOOO", fiveHourState.oneHoursRow)
     }
 
+    @Test
+    fun testFiveHourRow_shouldHandleZeroHour() {
+        val zeroHourState = useCase.execute(LocalTime.of(0,0,0))
+
+        assertEquals("OOOO", zeroHourState.fiveHoursRow)
+    }
+
+    @Test
+    fun testFiveHourRow_shouldHandleTenHour() {
+        val tenHourState = useCase.execute(LocalTime.of(10, 0, 0))
+
+        assertEquals("RROO", tenHourState.fiveHoursRow)
+    }
+
+    @Test
+    fun testFiveHourRow_shouldHandleTwentyThreeHour() {
+        val twentyThreeHourState = useCase.execute(LocalTime.of(23, 0, 0))
+
+        assertEquals("RRRR", twentyThreeHourState.fiveHoursRow)
+    }
+
 }
