@@ -5,6 +5,6 @@ import java.time.format.DateTimeFormatter
 
 val TIME_FORMATTER: DateTimeFormatter? = DateTimeFormatter.ofPattern("HH:mm:ss")
 
-fun getFormattedCurrentTime(): LocalTime? {
+fun getFormattedCurrentTime(): LocalTime {
     return LocalTime.now()
 }

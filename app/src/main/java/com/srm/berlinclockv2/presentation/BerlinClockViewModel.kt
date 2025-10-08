@@ -17,7 +17,7 @@ class BerlinClockViewModel(
     private val convertTimeUseCase: ConvertTimeUseCase = ConvertTimeUseCase()
 ) : ViewModel() {
 
-    private val _currentTimeString = MutableStateFlow(getFormattedCurrentTime()?.format(TIME_FORMATTER))
+    private val _currentTimeString = MutableStateFlow(getFormattedCurrentTime().format(TIME_FORMATTER))
 
     private val _clockState = MutableStateFlow(BerlinClockState())
     val clockState: StateFlow<BerlinClockState> = _clockState
@@ -26,11 +26,9 @@ class BerlinClockViewModel(
         viewModelScope.launch {
             while (true) {
                 val time = getFormattedCurrentTime()
-                time?.let { it ->
-                    _currentTimeString.update { it }
-                    updateClock(it)
-                    delay(1000L)
-                }
+                _currentTimeString.update { it }
+                updateClock(time)
+                delay(1000L)
             }
         }
     }
